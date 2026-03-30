@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Produtos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="layout">
+    <header class="page-header">
+        <div>
+            <a th:href="@{/}" class="back-link">Inicio</a>
+            <h1>Produtos</h1>
+            <p>Cadastro integrado com os recursos disponiveis.</p>
+        </div>
+        <nav>
+            <a th:href="@{/produtos/novo}" class="btn btn-primary">Novo produto</a>
+            <a th:href="@{/recursos}" class="btn btn-secondary">Ver recursos</a>
+        </nav>
+    </header>
+
+    <main class="panel">
+        <div th:if="${sucesso}" class="alert alert-success" th:text="${sucesso}"></div>
+        <div th:if="${erro}" class="alert alert-error" th:text="${erro}"></div>
+        <p th:if="${#lists.isEmpty(produtos)}" class="empty">Nenhum produto cadastrado.</p>
+        <table th:if="${!#lists.isEmpty(produtos)}" class="table" id="tabela-produtos">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Descricao</th>
+                <th>Preco</th>
+                <th>Estoque</th>
+                <th>Recursos</th>
+                <th>Acoes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="produto : ${produtos}">
+                <td th:text="${produto.id}">1</td>
+                <td th:text="${produto.nome}">Nome</td>
+                <td th:text="${produto.descricao}">Descricao</td>
+                <td th:text="'R$ ' + ${produto.preco}">R$ 0.00</td>
+                <td th:text="${produto.quantidadeEstoque}">0</td>
+                <td th:text="${#lists.isEmpty(produto.recursos) ? 'Sem recursos' : #strings.listJoin(produto.recursos, ', ')}">Recursos</td>
+                <td class="actions">
+                    <a th:href="@{/produtos/editar/{id}(id=${produto.id})}" class="btn btn-secondary">Editar</a>
+                    <form th:action="@{/produtos/remover/{id}(id=${produto.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+</body>
+</html>

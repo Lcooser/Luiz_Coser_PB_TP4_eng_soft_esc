@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${recurso.id != null && !recurso.id.isEmpty()} ? 'Editar recurso' : 'Novo recurso'">Recurso</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="layout">
+    <header class="page-header">
+        <div>
+            <a th:href="@{/recursos}" class="back-link">Voltar para recursos</a>
+            <h1 th:text="${recurso.id != null && !recurso.id.isEmpty()} ? 'Editar recurso' : 'Novo recurso'">Recurso</h1>
+            <p>Ao remover um recurso, os vinculos com produtos sao limpos automaticamente.</p>
+        </div>
+    </header>
+
+    <main class="panel">
+        <div th:if="${erro}" class="alert alert-error" th:text="${erro}"></div>
+        <form th:action="@{/recursos}" th:object="${recurso}" method="post" class="form-grid" id="form-recurso">
+            <label>
+                <span>ID</span>
+                <input type="number" th:field="*{id}" min="1" step="1"/>
+            </label>
+            <label>
+                <span>Titulo</span>
+                <input type="text" th:field="*{titulo}" maxlength="200"/>
+            </label>
+            <label class="wide">
+                <span>Descricao</span>
+                <textarea th:field="*{descricao}" rows="4" maxlength="2000"></textarea>
+            </label>
+            <label>
+                <span>Situacao</span>
+                <select th:field="*{situacao}">
+                    <option value="ATIVO">Ativo</option>
+                    <option value="INATIVO">Inativo</option>
+                </select>
+            </label>
+            <div class="form-actions wide">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a th:href="@{/recursos}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>

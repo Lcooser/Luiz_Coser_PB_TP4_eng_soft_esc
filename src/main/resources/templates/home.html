@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>TP4 Integrado</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="layout">
+    <header class="hero">
+        <div>
+            <p class="eyebrow">TP4</p>
+            <h1>Catalogo Integrado de Produtos e Recursos</h1>
+            <p class="hero-copy">Uma unica aplicacao para cadastro, listagem e vinculo entre os sistemas dos TPs anteriores.</p>
+        </div>
+        <nav class="hero-nav">
+            <a th:href="@{/produtos}" class="btn btn-light">Produtos</a>
+            <a th:href="@{/recursos}" class="btn btn-light">Recursos</a>
+        </nav>
+    </header>
+
+    <section class="cards">
+        <article class="card">
+            <span>Total de produtos</span>
+            <strong th:text="${painel.totalProdutos}">0</strong>
+        </article>
+        <article class="card">
+            <span>Total de recursos</span>
+            <strong th:text="${painel.totalRecursos}">0</strong>
+        </article>
+        <article class="card">
+            <span>Vinculos ativos</span>
+            <strong th:text="${painel.totalVinculos}">0</strong>
+        </article>
+    </section>
+
+    <section class="grid">
+        <article class="panel">
+            <div class="panel-header">
+                <h2>Produtos</h2>
+                <a th:href="@{/produtos/novo}" class="btn btn-primary">Novo produto</a>
+            </div>
+            <p th:if="${#lists.isEmpty(produtos)}" class="empty">Nenhum produto cadastrado.</p>
+            <ul th:if="${!#lists.isEmpty(produtos)}" class="summary-list">
+                <li th:each="produto : ${produtos}">
+                    <div>
+                        <strong th:text="${produto.nome}">Produto</strong>
+                        <span th:text="'ID ' + ${produto.id} + ' | R$ ' + ${produto.preco}">Resumo</span>
+                    </div>
+                    <span th:text="${#lists.isEmpty(produto.recursos) ? 'Sem recursos' : #strings.listJoin(produto.recursos, ', ')}">Recursos</span>
+                </li>
+            </ul>
+        </article>
+
+        <article class="panel">
+            <div class="panel-header">
+                <h2>Recursos</h2>
+                <a th:href="@{/recursos/novo}" class="btn btn-primary">Novo recurso</a>
+            </div>
+            <p th:if="${#lists.isEmpty(recursos)}" class="empty">Nenhum recurso cadastrado.</p>
+            <ul th:if="${!#lists.isEmpty(recursos)}" class="summary-list">
+                <li th:each="recurso : ${recursos}">
+                    <div>
+                        <strong th:text="${recurso.titulo}">Recurso</strong>
+                        <span th:text="'ID ' + ${recurso.id} + ' | ' + ${recurso.situacao}">Resumo</span>
+                    </div>
+                    <span th:text="${recurso.totalProdutos} + ' produto(s)'">0 produto(s)</span>
+                </li>
+            </ul>
+        </article>
+    </section>
+</div>
+</body>
+</html>

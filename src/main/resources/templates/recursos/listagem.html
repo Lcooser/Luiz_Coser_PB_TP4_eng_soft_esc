@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Recursos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="layout">
+    <header class="page-header">
+        <div>
+            <a th:href="@{/}" class="back-link">Inicio</a>
+            <h1>Recursos</h1>
+            <p>Os vinculos com produtos sao atualizados automaticamente.</p>
+        </div>
+        <nav>
+            <a th:href="@{/recursos/novo}" class="btn btn-primary">Novo recurso</a>
+            <a th:href="@{/produtos}" class="btn btn-secondary">Ver produtos</a>
+        </nav>
+    </header>
+
+    <main class="panel">
+        <div th:if="${sucesso}" class="alert alert-success" th:text="${sucesso}"></div>
+        <div th:if="${erro}" class="alert alert-error" th:text="${erro}"></div>
+        <p th:if="${#lists.isEmpty(recursos)}" class="empty">Nenhum recurso cadastrado.</p>
+        <table th:if="${!#lists.isEmpty(recursos)}" class="table" id="tabela-recursos">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titulo</th>
+                <th>Descricao</th>
+                <th>Situacao</th>
+                <th>Produtos vinculados</th>
+                <th>Acoes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="recurso : ${recursos}">
+                <td th:text="${recurso.id}">1</td>
+                <td th:text="${recurso.titulo}">Titulo</td>
+                <td th:text="${recurso.descricao}">Descricao</td>
+                <td th:text="${recurso.situacao}">Ativo</td>
+                <td th:text="${#lists.isEmpty(recurso.produtos) ? 'Sem produtos' : #strings.listJoin(recurso.produtos, ', ')}">Produtos</td>
+                <td class="actions">
+                    <a th:href="@{/recursos/editar/{id}(id=${recurso.id})}" class="btn btn-secondary">Editar</a>
+                    <form th:action="@{/recursos/remover/{id}(id=${recurso.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+</body>
+</html>

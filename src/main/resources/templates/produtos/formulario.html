@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="${produto.id != null && !produto.id.isEmpty()} ? 'Editar produto' : 'Novo produto'">Produto</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="layout">
+    <header class="page-header">
+        <div>
+            <a th:href="@{/produtos}" class="back-link">Voltar para produtos</a>
+            <h1 th:text="${produto.id != null && !produto.id.isEmpty()} ? 'Editar produto' : 'Novo produto'">Produto</h1>
+            <p>Selecione os recursos que devem ficar vinculados a este produto.</p>
+        </div>
+    </header>
+
+    <main class="panel">
+        <div th:if="${erro}" class="alert alert-error" th:text="${erro}"></div>
+        <form th:action="@{/produtos}" th:object="${produto}" method="post" class="form-grid" id="form-produto">
+            <label>
+                <span>ID</span>
+                <input type="number" th:field="*{id}" min="1" step="1"/>
+            </label>
+            <label>
+                <span>Nome</span>
+                <input type="text" th:field="*{nome}"/>
+            </label>
+            <label class="wide">
+                <span>Descricao</span>
+                <textarea th:field="*{descricao}" rows="4"></textarea>
+            </label>
+            <label>
+                <span>Preco</span>
+                <input type="number" th:field="*{preco}" min="0" step="0.01"/>
+            </label>
+            <label>
+                <span>Quantidade em estoque</span>
+                <input type="number" th:field="*{quantidadeEstoque}" min="0" step="1"/>
+            </label>
+            <section class="wide selector">
+                <div class="selector-header">
+                    <h2>Recursos vinculados</h2>
+                    <a th:href="@{/recursos/novo}" class="btn btn-secondary">Criar recurso</a>
+                </div>
+                <p th:if="${#lists.isEmpty(recursosDisponiveis)}" class="empty">Nenhum recurso disponivel para vinculo.</p>
+                <div th:if="${!#lists.isEmpty(recursosDisponiveis)}" class="checkbox-grid">
+                    <label th:each="recurso : ${recursosDisponiveis}" class="checkbox-card">
+                        <input type="checkbox" th:field="*{recursoIds}" th:value="${recurso.id}"/>
+                        <span>
+                            <strong th:text="${recurso.titulo}">Recurso</strong>
+                            <small th:text="${recurso.ativo} ? 'Ativo' : 'Inativo'">Status</small>
+                        </span>
+                    </label>
+                </div>
+            </section>
+            <div class="form-actions wide">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a th:href="@{/produtos}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </main>
+</div>
+</body>
+</html>
