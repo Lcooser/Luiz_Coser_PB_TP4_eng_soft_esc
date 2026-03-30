@@ -22,5 +22,7 @@ jobs:
           java-version: '17'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+      - name: Grant execute permission to Gradle wrapper
+        run: chmod +x ./gradlew
       - name: Compile With Lint
         run: ./gradlew clean build --warning-mode all
